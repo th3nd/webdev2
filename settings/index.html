@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="settings.css">
+    <link rel="icon" href="../img/gear.svg" type="image/x-icon">
+</head>
+<body>
+    <div class="c">
+        <h1>Settings</h1>
+        <h2>Widget builder</h2>
+        <div class="w">
+            <ul id="widgets"></ul>
+            <button id="add">Add page</button>
+            <button id="save">Save Widgets</button>
+        </div>
+        <h2>Visual</h2>
+        <li class="colorpicker_thing_temp">
+            <h3>accent color</h3>
+            <div class="pick" id="accent_color" onclick="open_colorpicker(this)", onload="set_color(this)"></div>
+        </li>
+        <div class="darkmode_checkbox">
+            <h3>dark mode</h3>
+            <input type="checkbox" name="darkmode" id="darkmode">
+        </div>
+
+        <div class="bgtype">
+            <h3>background type</h3>
+            <div class="dropdown">
+                <p class="name" id="coloroptions">color</p>
+                <div class="options">
+                    <ul>
+                        <li>color</li>
+                        <li>image</li>
+                        <li>dynamic</li>
+                        <li>particles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- hidden by default -->
+        <div id="color">
+            <!-- <h3>background color options</h3> -->
+            <div class="color_container">
+                <div class="color_header"><h3>number of colors:</h3><h3><span id="less"> < </span><span id="numcolor">3</span><span id="more"> > </span></h3></div>
+                <ul class="color_list">
+                </ul>
+            </div>
+        </div>
+        <div id="image">
+            <h4>background image url</h4>
+            <!-- user input url -->
+            <div class="image_row">
+                <input type="text" name="image" id="image_input">
+                <button id="img_save">save image</button>
+            </div>
+        </div>
+        <div id="dynamic"></div>
+        <div id="particles">
+            <h4>particle settings</h4>
+            <!-- slider input -->
+            <div class="row">
+                <input type="range" name="particles" id="particle_amount" min="0" max="200" step="1">
+                <p id="particle_amount_val" class="value"></p>
+            </div>
+            <!-- colorpicker -->
+            <li class="colorpicker_thing_temp">
+                <p>particle color</p>
+                <div class="pick" id="particle_color" onclick="open_colorpicker(this)", onload="set_color(this)"></div>
+            </li>
+        </div>
+        
+        <h2>Data</h2>
+        <h3>data source</h3>
+        <h3>unit used</h3>
+        <h3>language</h3>
+        <h2>Info</h2>
+    </div>
+
+    <canvas id="colorpicker"></canvas>
+    <script src="../js/handle_settings.js"></script>
+    <script src="../js/colorpicker.js"></script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+:root {
+    --background-primary: #343d80;
+    --background-secondary: #1e2d6e;
+    --text-color: #cccccc;
+    --background-overlay: #00000046;
+    --background-blur: #ffffff14;
+    --background-hover: #ffffff3e;
+    --scrollbar-thumb: #ffffff46;
+    --scrollbar-thumb-hover: #ffffff;
+    --scrollbar-track: transparent;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--background-primary);
+}
+
+body {
+    overflow-x: hidden;
+    background: linear-gradient(to bottom, var(--background-primary), var(--background-secondary));
+}
+
+.c {
+    color: var(--text-color);
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    overflow-y: hidden;
+    justify-content: center;
+    align-items: center;
+}
+
+.col {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 50%;
+    padding: 5rem;
+}
+
+.col:nth-child(2) {
+    align-items: center;
+    justify-content: center;
+}
+
+.child {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.child * {
+    display: flex;
+    flex-direction: row;
+}
+
+.desc * {
+    margin-right: 1rem;
+}
+
+h1 {
+    font-size: 5rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+.unfocus {
+    opacity: 0.5;
+}
+
+.loc * {
+    margin-left: .2rem;
+}
+
+.blur {
+    background: var(--background-overlay);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    overflow-y: auto;
+}
+
+#news_container {
+    width: auto;
+    height: auto;
+    overflow: scroll;
+    display: flex;
+    flex-direction: row;
+}
+
+#news_container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#news_container::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
+}
+
+#news_container::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+
+#news_container::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+
+/* Firefox-specific styles */
+#news_container {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+#news_container:hover {
+    scrollbar-color: var(--scrollbar-thumb-hover) transparent;
+}
+
+.art {
+    margin: 1rem;
+    padding: 2rem;
+    background: var(--background-blur);
+    border-radius: 20px;
+    width: 100%;
+    transition: 200ms;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+.art:hover {
+    cursor: pointer;
+    background: var(--background-hover);
+}
+
+.art h3 {
+    font-size: 1.1rem;
+}
+
+.art .author {
+    border-left: 1px solid var(--text-color);
+    margin-left: .5rem;
+    padding-left: .5rem;
+    overflow-x: hidden;
+    align-self: center;
+}
+
+canvas {
+    overflow-y: hidden;
+    width: 100%;
+    height: 40vh;
+    margin-bottom: 2vh;
+}
+
+.graph {
+    padding: 5vh;
+}
+
+.graph>ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.graph>ul li {
+    list-style: none;
+    transition: 200ms;
+}
+
+#dates li:hover {
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+#bg {
+    display: none;
+}
+
+/* Responsive code */
+@media only screen and (max-width: 1000px) {
+    .c {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        padding-top: 0;
+        margin-top: 0;
+    }
+
+    .author {
+        display: none;
+    }
+
+    .col {
+        flex-direction: column;
+        align-self: center;
+        justify-content: center;
+        width: auto;
+        margin: 0 5vw;
+        padding: 0;
+    }
+
+    .loc {
+        display: none;
+    }
+
+    .child {
+        height: 100vh;
+        justify-content: center;
+    }
+
+    .temp {
+        align-self: center;
+    }
+
+    .temp .num h1 {
+        font-size: 40vw;
+    }
+
+    div.weather.unfocus {
+        width: 100%;
+    }
+
+    .weather {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .weather p {
+        text-align: center;
+        font-size: 1rem;
+
+        background: var(--background-overlay);
+        backdrop-filter: blur(10px);
+        border-radius: 1rem;
+        padding: 1rem;
+        width: 100%;
+        margin: .2rem;
+
+    }
+
+    #news_container {
+        width: 100%;
+        max-height: 50vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    .graph {
+        height: 80vw;
+        width: 100vw;
+    }
+
+    canvas {
+        width: 100%;
+        height: 100%;
+    }
+}
