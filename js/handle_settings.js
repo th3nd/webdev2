@@ -120,8 +120,11 @@ options.forEach(option => {
             // remove last color
             const colors = JSON.parse(localStorage.getItem('colors'))
 
+            // TODO: filter out all colors that doesnt end with color
             const keys = Object.keys(colors)
-            const lastKey = keys[keys.length - 1]
+            const lastKey = keys.filter(key => key.startsWith('color'))[keys.length - 1]
+            // const keys = Object.keys(colors)
+            // const lastKey = keys[keys.length - 1]
             if (lastKey) 
                 delete colors[lastKey]
             localStorage.setItem('colors', JSON.stringify(colors))

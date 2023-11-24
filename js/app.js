@@ -40,15 +40,22 @@ function display_info(d) {
 
 
 // this gets called onload after data is gotten and every 30mins when we upd data
-window.addEventListener('data_changed', () => display_info(JSON.parse(localStorage.getItem('weather_data'))))
+window.addEventListener('html_loaded', () => display_info(JSON.parse(localStorage.getItem('weather_data'))))
 
 // handle settings
 window.addEventListener('html_loaded', () => {
     // check bg option
-    const option = localStorage.getItem('bgtype')
+    let option
+    try {
+        option = localStorage.getItem('bgtype')
+    } catch (e) {
+        option = 'color'
+    }
+
     switch (option) {
         case 'color':
             // get colors
+            // TODO: if no colors, do default ones.
             let colors = JSON.parse(localStorage.getItem('colors'))
             // map out all items that doesnt begin with color, and get the values into an array
             const bg_colors = Object.values(Object.fromEntries(
@@ -98,8 +105,11 @@ window.addEventListener('html_loaded', () => {
         document.documentElement.style.setProperty('--background-hover', '#ffffff3e')
     } else {
         document.documentElement.style.setProperty('--text-color', '#1b1b1b');
-        document.documentElement.style.setProperty('--background-overlay', '#e6e6e646'); // Light gray overlay
-        document.documentElement.style.setProperty('--background-blur', '#e6e6e614');    // Light gray blur
-        document.documentElement.style.setProperty('--background-hover', '#e6e6e63e');  // Light gray hover
+        // document.documentElement.style.setProperty('--background-overlay', '#e6e6e646'); // Light gray overlay
+        // document.documentElement.style.setProperty('--background-blur', '#e6e6e614');    // Light gray blur
+        // document.documentElement.style.setProperty('--background-hover', '#e6e6e63e');  // Light gray hover
+    
+        // remove .gearicon 's filter
+        document.querySelector('.gearicon').style.filter = 'none'
     }
 })

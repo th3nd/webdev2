@@ -1,21 +1,30 @@
 
-function draw_graph(d, tdate = 0) {
-    const canvas = document.querySelector('canvas')
-    const ctx = canvas.getContext('2d')
+// mouse class
+const m = {
+    x:0,
+    y:0
+}
 
+
+let canvas
+// TODO: filled graph if temp < zero
+function draw_graph(d, tdate = 0) {
+    canvas = document.querySelector('canvas')
+    const ctx = canvas.getContext('2d')
+    
     // fix for blurry image
     const pixel_ratio = window.devicePixelRatio || 1
     canvas.width = canvas.clientWidth * pixel_ratio
     canvas.height = canvas.clientHeight * pixel_ratio
     ctx.scale(pixel_ratio, pixel_ratio)
+    const graph_margin = 2
 
     // clear screen
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     // get min temp and max temp in d
-    const min_temp = Math.floor(Math.min(...d.list.map(item => item.main.temp)))
-    const max_temp = Math.ceil(Math.max(...d.list.map(item => item.main.temp)))
-    console.log(min_temp, max_temp)
+    const min_temp = (Math.floor(Math.min(...d.list.map(item => item.main.temp))) - graph_margin)
+    const max_temp = (Math.ceil(Math.max(...d.list.map(item => item.main.temp))) + graph_margin)
 
     let arr = []
 
@@ -45,9 +54,13 @@ function draw_graph(d, tdate = 0) {
     ctx.beginPath()
     ctx.lineWidth = 2
     // grab accentcolor
-    let accent = JSON.parse(localStorage.getItem('colors')).accent_color
-    if (!accent)
+    let accent
+    try {
+        accent = JSON.parse(localStorage.getItem('colors')).accent_color
+    } 
+    catch (e) {
         accent= 'white'
+    }
     ctx.strokeStyle = accent
 
     // calculate the x and y coordinates for the graph points
@@ -83,12 +96,16 @@ function draw_graph(d, tdate = 0) {
         ctx.fillText(i * 3 + ':00', x, canvas.height - 5)
     }
 
+    // grab range between min and max temp.both values can be negative
+    const range = Math.abs(max_temp - min_temp)
+
 
     // add additional temperature labels on the side
-    const interval = (max_temp - min_temp) / 10 // adjust this interval as needed
-    for (let i = 0; i <= 10; i++) {
+    const interval = (max_temp - min_temp) / range // adjust this interval as needed
+    for (let i = 0; i <= (range); i++) {
         const temp_val = Math.round((min_temp + i * interval))
         const y = canvas.height - (temp_val - min_temp) * (canvas.height / (max_temp - min_temp))
+
         // draw line
         ctx.moveTo(0, y)
         ctx.lineTo(canvas.width, y)
@@ -103,9 +120,18 @@ function draw_graph(d, tdate = 0) {
     ctx.closePath()
 }
 
+// eventlistener for onmousemove
+// we run the eventlistener for the first time when the page loads and we get the html_loaded custom event
+function mousemove() {
+    canvas.addEventListener('mousemove', e => {
+        m.x = e.clientX
+        m.y = e.clientY
+    })
+}
+
 
 let should_update_graph = true
-window.addEventListener('data_changed', function () {
+window.addEventListener('html_loaded', () => {
     if (should_update_graph) {
         should_update_graph = false
         draw_graph(JSON.parse(localStorage.getItem('weather_data')))
@@ -114,7 +140,7 @@ window.addEventListener('data_changed', function () {
 
 // eventlistener for list with id dates
 window.addEventListener('html_loaded', () => 
-    document.querySelector('#dates').addEventListener('click', (e) => {
+    document.querySelector('#dates').addEventListener('click', e => {
         // get the iteration of child that user clicks
         const index = Array.from(e.target.parentElement.children).indexOf(e.target)
 
@@ -151,4 +177,6 @@ window.addEventListener('html_loaded', () => {
     const li_element = document.createElement('li')
     li_element.innerText = 'all';  
     dates_element.appendChild(li_element)
+
+    mousemove()
 })

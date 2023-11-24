@@ -7,6 +7,8 @@ function get_pos() {
             try {
                 // save position using localstorage
                 localStorage.setItem('pos', [pos.coords.latitude, pos.coords.longitude])
+                // remove .popup
+                document.querySelector('.popup').remove()
             } catch (e) {
                 console.error(e)
             }
@@ -46,6 +48,6 @@ async function get_data() {
 }
 
 // eventlistener for onload
-// document.addEventListener('DOMContentLoaded', () => get_data())
+document.addEventListener('DOMContentLoaded', () => get_data())
 
-window.addEventListener('html_loaded', () => get_data())
+// window.addEventListener('html_loaded', () => get_data())

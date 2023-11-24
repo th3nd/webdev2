@@ -99,6 +99,8 @@ h2 {
     overflow: scroll;
     display: flex;
     flex-direction: row;
+
+    color: #cccccc;
 }
 
 #news_container::-webkit-scrollbar {
@@ -149,7 +151,7 @@ h2 {
 }
 
 .art .author {
-    border-left: 1px solid var(--text-color);
+    border-left: 1px solid #cccccc;
     margin-left: .5rem;
     padding-left: .5rem;
     overflow-x: hidden;
@@ -176,15 +178,51 @@ canvas {
 .graph>ul li {
     list-style: none;
     transition: 200ms;
+    color: #939393;
+
 }
 
 #dates li:hover {
     cursor: pointer;
-    color: var(--text-color);
+    color: #cccccc;
 }
 
 #bg {
     display: none;
+}
+
+/* gear icon on mainpage */
+/* TODO: style more */
+.gearicon {
+    display:block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: auto;
+    width: 5vh;
+    margin: 1rem;
+
+    /* invert color */
+    filter: invert(100%);
+
+    cursor: pointer;
+}
+
+.popup {
+    position: fixed;
+    z-index: 99;
+    /* blur bg */
+    backdrop-filter: blur(10px);
+    width: 100vw;
+    height: 100vh;
+}
+
+.popup div {
+    font-family: sans-serif;
+    position: absolute;
+    left: 50vw;
+    top: 50vh;
+    translate: -50% -50%;
 }
 
 /* Responsive code */

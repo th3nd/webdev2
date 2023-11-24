@@ -4,7 +4,14 @@ let col_content = ['temp', 'news']
 let page_content = []
 
 function get_widgets() {
+    // check if custom event 'data_changed' exists
+    // while (!window.data_changed) {
+    //     // wait 100ms
+    //     setTimeout(() => get_widgets(), 100)
+    // }
+
     page_content = localStorage.getItem('widget_names').split(',')
+    // TODO: if we dont have any content, set the default which is "col,graph"
     load_html()
 }
 
@@ -60,4 +67,4 @@ function load_html() {
     window.dispatchEvent(html_loaded)
 }
 
-document.addEventListener('DOMContentLoaded', () => get_widgets())
+window.addEventListener('data_changed', () => get_widgets())

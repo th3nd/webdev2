@@ -148,10 +148,12 @@ button:hover {
     background: var(--border-color);
 }
 
+/* todo: unite the classes. */
 .theme,
 .bgtype,
 .dirdrop,
-.darkmode_checkbox {
+.darkmode_checkbox,
+.unitused {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
