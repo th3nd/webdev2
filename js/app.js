@@ -45,12 +45,16 @@ window.addEventListener('html_loaded', () => display_info(JSON.parse(localStorag
 // handle settings
 window.addEventListener('html_loaded', () => {
     // check bg option
-    let option
+    let option = ''
     try {
         option = localStorage.getItem('bgtype')
-    } catch (e) {
+    } catch (e) {}
+
+    if (option == null) {
         option = 'color'
     }
+
+    console.log(option)
 
     switch (option) {
         case 'color':
@@ -58,9 +62,14 @@ window.addEventListener('html_loaded', () => {
             // TODO: if no colors, do default ones.
             let colors = JSON.parse(localStorage.getItem('colors'))
             // map out all items that doesnt begin with color, and get the values into an array
-            const bg_colors = Object.values(Object.fromEntries(
-                Object.entries(colors).filter(([key, value]) => key.startsWith('color'))
-            ))
+            let bg_colors = []
+            try {
+                bg_colors = Object.values(Object.fromEntries(
+                    Object.entries(colors).filter(([key, value]) => key.startsWith('color'))
+                ))
+            } catch (e) {
+                bg_colors = ['#343d80', '#1e2d6e']
+            }
             // set bg color
             document.documentElement.style.background = bg_colors[0]
             // set gradient

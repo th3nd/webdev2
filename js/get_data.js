@@ -8,8 +8,23 @@ function get_pos() {
                 // save position using localstorage
                 localStorage.setItem('pos', [pos.coords.latitude, pos.coords.longitude])
                 // remove .popup
-                document.querySelector('.popup').remove()
+                // document.querySelector('.popup').remove()
             } catch (e) {
+                const popup = 
+                `<div class="popup">
+                    <div>
+                        <h1>please enable locations.</h1>
+                        <h3>its only used locally for gathering weather and news related to you.</h3>
+                    </div>
+                </div>`
+
+                // convert string to html element
+                const div = document.createElement('div')
+                div.innerHTML = popup
+                // append to body
+                document.body.appendChild(div)
+                console.log(div)
+
                 console.error(e)
             }
         })
@@ -24,7 +39,7 @@ async function get_data() {
     // call get pos, wait for response
     await get_pos()
     // read pos from localstorage
-    const pos = localStorage.getItem('pos').split(',')
+    const pos = await localStorage.getItem('pos').split(',')
     // define url with our saved pos and API key
     const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${pos[0]}&lon=${pos[1]}&appid=${API_KEY}&units=metric`
     try {

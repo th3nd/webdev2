@@ -10,8 +10,12 @@ function get_widgets() {
     //     setTimeout(() => get_widgets(), 100)
     // }
 
-    page_content = localStorage.getItem('widget_names').split(',')
-    // TODO: if we dont have any content, set the default which is "col,graph"
+    try {
+        page_content = localStorage.getItem('widget_names').split(',')
+    }
+    catch (e) {
+        page_content = ['col','graph']
+    }
     load_html()
 }
 
