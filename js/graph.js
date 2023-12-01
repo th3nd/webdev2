@@ -50,6 +50,7 @@ function draw_graph(d, tdate = 0) {
         }
     }
 
+
     // set standard variables, begin path
     ctx.beginPath()
     ctx.lineWidth = 2
@@ -153,8 +154,12 @@ window.addEventListener('html_loaded', () =>
         // make a new date object, add index to that and get a new date
         const date = new Date()
         date.setDate(date.getDate() + index)
+        // add a zsero if month < 10
+        const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+        // add a zero if date < 10
+        const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
         // convert date to a readable string that has the same formatting as the json file
-        const str_date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+        const str_date = date.getFullYear() + '-' + month + '-' + day
         draw_graph(JSON.parse(localStorage.getItem('weather_data')), str_date)
     })
 )
