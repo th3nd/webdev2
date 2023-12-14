@@ -9,14 +9,17 @@ function get_pos() {
                 localStorage.setItem('pos', [pos.coords.latitude, pos.coords.longitude])
                 // remove .popup
                 // document.querySelector('.popup').remove()
+
+                // Call get_data here after successful geolocation
+                await get_data()
             } catch (e) {
-                const popup = 
-                `<div class="popup">
-                    <div>
-                        <h1>please enable locations.</h1>
-                        <h3>its only used locally for gathering weather and news related to you.</h3>
-                    </div>
-                </div>`
+                const popup =
+                    `<div class="popup">
+                        <div>
+                            <h1>please enable locations.</h1>
+                            <h3>its only used locally for gathering weather and news related to you.</h3>
+                        </div>
+                    </div>`
 
                 // convert string to html element
                 const div = document.createElement('div')
@@ -36,8 +39,6 @@ function get_pos() {
 async function get_data() {
     // define api key for openweathermap
     const API_KEY = '4d8fb5b93d4af21d66a2948710284366'
-    // call get pos, wait for response
-    await get_pos()
     // read pos from localstorage
     const pos = await localStorage.getItem('pos').split(',')
     // define url with our saved pos and API key
@@ -59,10 +60,8 @@ async function get_data() {
     }
 
     // call function every 30 minutes
-    setTimeout(get_data, 30000*60)
+    setTimeout(get_data, 30000 * 60)
 }
 
 // eventlistener for onload
-document.addEventListener('DOMContentLoaded', () => get_data())
-
-// window.addEventListener('html_loaded', () => get_data())
+document.addEventListener('DOMContentLoaded', () => get_pos())

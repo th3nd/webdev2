@@ -54,8 +54,6 @@ window.addEventListener('html_loaded', () => {
         option = 'color'
     }
 
-    console.log(option)
-
     switch (option) {
         case 'color':
             // get colors
@@ -69,14 +67,16 @@ window.addEventListener('html_loaded', () => {
                 ))
             } catch (e) {
                 bg_colors = ['#343d80', '#1e2d6e']
+                console.log('bg_color is null.', e)
             }
+
             // set bg color
             document.documentElement.style.background = bg_colors[0]
             // set gradient
             let gradient = 'linear-gradient(to bottom, '
             for (let i = 0; i < bg_colors.length; i++) {
                 gradient += bg_colors[i]
-                if (i != bg_colors.length - 1) {
+                if (i != (bg_colors.length - 1)) {
                     gradient += ', '
                 }
             }

@@ -16,7 +16,7 @@ function draw_graph(d, tdate = 0) {
     const pixel_ratio = window.devicePixelRatio || 1
     canvas.width = canvas.clientWidth * pixel_ratio
     canvas.height = canvas.clientHeight * pixel_ratio
-    ctx.scale(pixel_ratio, pixel_ratio)
+    // ctx.scale(pixel_ratio, pixel_ratio)
     const graph_margin = 2
 
     // clear screen
@@ -25,6 +25,7 @@ function draw_graph(d, tdate = 0) {
     // get min temp and max temp in d
     const min_temp = (Math.floor(Math.min(...d.list.map(item => item.main.temp))) - graph_margin)
     const max_temp = (Math.ceil(Math.max(...d.list.map(item => item.main.temp))) + graph_margin)
+
 
     let arr = []
 
@@ -57,7 +58,7 @@ function draw_graph(d, tdate = 0) {
     // grab accentcolor
     let accent
     try {
-        accent = JSON.parse(localStorage.getItem('colors')).accent_color
+        accent = JSON.parse(localStorage.getItem('colors')).accent
     } 
     catch (e) {
         accent= 'white'
@@ -94,7 +95,9 @@ function draw_graph(d, tdate = 0) {
         const x = (i / (arr.length - 1)) * canvas.width
         ctx.moveTo(x, 0)
         ctx.lineTo(x, canvas.height)
-        ctx.fillText(i * 3 + ':00', x, canvas.height - 5)
+        if (arr.length < 14) {
+            ctx.fillText(i * 3 + ':00', x, canvas.height - 5)
+        }
     }
 
     // grab range between min and max temp.both values can be negative

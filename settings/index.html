@@ -14,13 +14,14 @@
         <h2>Widget builder</h2>
         <div class="w">
             <ul id="widgets"></ul>
+            <h3>Rows children</h3>
             <button id="add">Add page</button>
             <button id="save">Save Widgets</button>
         </div>
         <h2>Visual</h2>
         <li class="colorpicker_thing_temp">
             <h3>accent color</h3>
-            <div class="pick" id="accent_color" onclick="open_colorpicker(this)", onload="set_color(this)"></div>
+            <div class="pick" id="accent" onclick="open_colorpicker(this)", onload="set_color(this)"></div>
         </li>
         <div class="darkmode_checkbox">
             <h3>dark mode</h3>
@@ -75,7 +76,7 @@
         
         <h2>Data</h2>
         <h3>data source</h3>
-        <p>the weather data is gathered from YUJGEYU and the news are from HDIUHDU</p>
+        <p>the weather data is gathered from openweathermap and the news are from newsapi.org</p>
 
         <h3>unit used</h3>
         <p>here you can select the unit displayed for temperature on the page.</p>
@@ -91,8 +92,9 @@
                 </div>
             </div>
         </div>
-        <h3>language</h3>
+        <!-- <h3>language</h3> -->
         <h2>Info</h2>
+        <p>Made by Johannes for Webb2</p>
     </div>
 
     <canvas id="colorpicker"></canvas>

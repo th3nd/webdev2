@@ -41,7 +41,13 @@ function save_widgets() {
 
 function load_widgets() {
     page_count = 0
-    const names = localStorage.getItem('widget_names').split(',')
+    let names
+    try {
+        names = localStorage.getItem('widget_names').split(',')
+    } catch (e) {
+        // default values for when we havent loaded settings before
+        names = ['col', 'graph']
+    }
     wparent.innerHTML = ''
     for (let i = 0; i < names.length; i++) {
         add_widget(names[i])
@@ -90,7 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // correctly set the name for dropdown.
     // grab bgtype from localstorage
-    const first_name = localStorage.getItem('bgtype')
+    let first_name = localStorage.getItem('bgtype')
+    if (!first_name)
+        first_name = 'default'
+        
     const drop = document.querySelector("#coloroptions")
     drop.innerText = first_name
     display_option(first_name)
@@ -100,7 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // grab colors from localstorage
     load_widgets()
     // grab how many colors we have saved here, use that as param.
-    draw_picker(localStorage.getItem('colors').split(':').length-1)
+    let clr_num
+    try {
+        clr_num = localStorage.getItem('colors').split(':').length-1
+    } catch (e) {
+        // default value if we dont have any previous colors is 3.
+        clr_num = 3
+    }
+    draw_picker(clr_num)
 })
 
 
@@ -200,5 +216,12 @@ document.querySelectorAll('input[type=range]').forEach(range => {
 // do the same for colorpickers. load the color
 // the reason for this not working with all colorpickers are that some are loaded later with other funcitons.
 document.querySelectorAll('.pick').forEach(e => {
-    e.style.background = JSON.parse(localStorage.getItem('colors'))[e.id]
+    let clr
+    try {
+        clr = JSON.parse(localStorage.getItem('colors'))[e.id]
+    } catch (e) {
+        // set default color on colorpicker if color isnt set beforehand
+        clr = '#ffffff'
+    }
+    e.style.background = clr
 })

@@ -29,7 +29,15 @@ function open_colorpicker(el) {
 function set_color(el) {
     // wait for colors to be valid (ghetto)
     setTimeout(() => {
-        el.style.backgroundColor = colors[el.id]
+        const default_bg = {color1:'#343d80', color2:'#1e2d6e'}
+
+        let clr
+        try {
+            clr = colors[el.id]
+        } catch (e) {
+            clr = default_bg[e.id]
+        } 
+        el.style.backgroundColor = clr
     }, 100)
 }
 
