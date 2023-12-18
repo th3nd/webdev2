@@ -1,6 +1,11 @@
 const data_changed = new Event('data_changed')
 
 function get_pos() {
+    // load last vals as placeholder.
+    if (localStorage.getItem('weather_data') !== null) {
+        window.dispatchEvent(data_changed)
+    }
+
     // try to access current pos 
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(async (pos) => {
