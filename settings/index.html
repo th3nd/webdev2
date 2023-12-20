@@ -9,26 +9,56 @@
     <link rel="icon" href="../img/gear.svg" type="image/x-icon">
 </head>
 <body>
+
+    <!-- floating save settings button -->
+    <div class="save">
+        <button id="save">save</button>
+    </div>
+
     <div class="c">
         <h1>Settings</h1>
         <h2>Widget builder</h2>
         <div class="w">
-            <ul id="widgets"></ul>
-            <h3>Rows children</h3>
-            <button id="add">Add page</button>
-            <button id="save">Save Widgets</button>
+        </div>
+        <button id="add">Add page</button>
+        <h4>row children</h4>
+        <div class="dropdown_parent">
+            <h3>child 1</h3>
+            <div class="dropdown">
+                <p class="name" id="child1">temp</p>
+                <div class="options">
+                    <ul>
+                        <li>temp</li>
+                        <li>news</li>
+                        <li>graph</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="dropdown_parent">
+            <h3>child 2</h3>
+            <div class="dropdown">
+                <p class="name" id="child2">news</p>
+                <div class="options">
+                    <ul>
+                        <li>temp</li>
+                        <li>news</li>
+                        <li>graph</li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <h2>Visual</h2>
-        <li class="colorpicker_thing_temp">
-            <h3>accent color</h3>
-            <div class="pick" id="accent" onclick="open_colorpicker(this)", onload="set_color(this)"></div>
+        <li class="dropdown_parent">
+            <h4>accent color</h4>
+            <div class="pick" id="accent"></div>
         </li>
-        <div class="darkmode_checkbox">
-            <h3>dark mode</h3>
+        <div class="dropdown_parent">
+            <h4>dark mode</h4>
             <input type="checkbox" name="darkmode" id="darkmode">
         </div>
 
-        <div class="bgtype">
+        <div class="bgtype dropdown_parent">
             <h3>background type</h3>
             <div class="dropdown">
                 <p class="name" id="coloroptions">color</p>
@@ -48,16 +78,33 @@
             <div class="color_container">
                 <div class="color_header"><h3>number of colors:</h3><h3><span id="less"> < </span><span id="numcolor">3</span><span id="more"> > </span></h3></div>
                 <ul class="color_list">
+                    <li class="dropdown_parent">
+                        <p>color 1</p>
+                        <div class="pick" id="color1"></div>
+                    </li>
+                    <li class="dropdown_parent">
+                        <p>color 2</p>
+                        <div class="pick" id="color2"></div>
+                    </li>
+                    <li class="dropdown_parent">
+                        <p>color 3</p>
+                        <div class="pick" id="color3"></div>
+                    </li>
+                    <li class="dropdown_parent">
+                        <p>color 4</p>
+                        <div class="pick" id="color4"></div>
+                    </li>
+                    <li class="dropdown_parent">
+                        <p>color 5</p>
+                        <div class="pick" id="color5"></div>
+                    </li>
                 </ul>
             </div>
         </div>
         <div id="image">
             <h4>background image url</h4>
             <!-- user input url -->
-            <div class="image_row">
-                <input type="text" name="image" id="image_input">
-                <button id="img_save">save image</button>
-            </div>
+            <input type="text" name="image" id="bgimage">
         </div>
         <div id="dynamic"></div>
         <div id="particles">
@@ -68,37 +115,21 @@
                 <p id="particle_amount_val" class="value"></p>
             </div>
             <!-- colorpicker -->
-            <li class="colorpicker_thing_temp">
+            <li class="dropdown_parent">
                 <p>particle color</p>
-                <div class="pick" id="particle_color" onclick="open_colorpicker(this)", onload="set_color(this)"></div>
+                <div class="pick" id="particle_color"></div>
             </li>
         </div>
         
-        <h2>Data</h2>
-        <h3>data source</h3>
-        <p>the weather data is gathered from openweathermap and the news are from newsapi.org</p>
-
-        <h3>unit used</h3>
-        <p>here you can select the unit displayed for temperature on the page.</p>
-        <div class="unitused">
-            <p>unit used</p>
-            <div class="dropdown">
-                <p class="name" id="unit">celcius</p>
-                <div class="options">
-                    <ul>
-                        <li>celcius</li>
-                        <li>fahrenheit</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- <h3>language</h3> -->
         <h2>Info</h2>
         <p>Made by Johannes for Webb2</p>
+        <p>the weather data is gathered from openweathermap and the news are from newsapi.org</p>
+
     </div>
 
     <canvas id="colorpicker"></canvas>
-    <script src="../js/handle_settings.js"></script>
-    <script src="../js/colorpicker.js"></script>
+    <script type="module" src="../js/colorpicker.js"></script>
+    <script type="module" src="../js/handle_settings.js"></script>
+
 </body>
 </html>

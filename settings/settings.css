@@ -52,6 +52,17 @@ body {
     margin: 2vh 0;
 }
 
+/* todo: unite the classes. */
+.dropdown_parent {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 2vh 0;
+
+    height: 5vh;
+}
+
 .dropdown {
     width: fit-content;
     padding: .5rem;
@@ -93,25 +104,17 @@ li:hover {
 
 .options {
     display: none;
-    border: var(--border-color) 2px solid;
-    margin-top: .5rem;
-    padding-top: .5rem;
-    position: absolute;
-    top: auto;
-    left: auto;
+    position: relative;
+    z-index: 999;
     background: var(--background);
-    width: 5em;
-    padding: inherit;
-    translate: -.5em 0;
-    z-index: 2;
+
 }
 
 .dropdown:hover .options {
     display: flex;
     cursor: pointer;
-    max-height: 0%;
     overflow: hidden;
-    animation: 500ms rolldown ease-in-out forwards;
+    transition: 1s;
 }
 
 button {
@@ -148,18 +151,6 @@ button:hover {
     background: var(--border-color);
 }
 
-/* todo: unite the classes. */
-.theme,
-.bgtype,
-.dirdrop,
-.darkmode_checkbox,
-.unitused {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: baseline;
-    margin: 2vh 0;
-}
 
 .darkmode_checkbox:last-child {
     width: 3rem;
@@ -214,7 +205,7 @@ button:hover {
 }
 
 .color_list li {
-    display: flex;
+    display: none;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -247,7 +238,7 @@ input[type=text] {
     color: var(--text-color);
     padding: .5rem;
     font-size: 1.2rem;
-    width: 70%;
+    width: calc(100% - 1rem);
 }
 
 input[type=range] {

@@ -11,12 +11,47 @@ const m = {
     y: 0
 }
 
+
 let max_color = [255, 255, 255]
 
 let colors = {}
 
+export function get_colors() {
+    // turn rgb to hex
+    for (const key in colors) {
+        if (colors.hasOwnProperty(key)) {
+            const color = colors[key];
+            if (color.startsWith('rgb')) {
+                const rgb = color.slice(4, -1).split(',').map(x => parseInt(x))
+                colors[key] = rgb_to_hex(rgb[0], rgb[1], rgb[2])
+            }
+        }
+    }
+
+    return colors
+}
+
+// cred: https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+export function rgb_to_hex(r, g, b) {
+    function component_to_hex(c) {
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    }
+    return "#" + component_to_hex(r) + component_to_hex(g) + component_to_hex(b);
+}
+
+
 let id
-function open_colorpicker(el) {
+
+// querySelectorAll .pick
+document.querySelectorAll('.pick').forEach(el => {
+    el.addEventListener('click', () => {
+        open_colorpicker(el)
+    })
+})
+
+function open_colorpicker(el=0) {
+    if (el == 0) return
     id = el.id
     el.style.backgroundColor = colors[id]
 
@@ -26,20 +61,6 @@ function open_colorpicker(el) {
     canvas.style.top = Math.min(m.y, screen.height - canvas.height) + 'px'
 }
 
-function set_color(el) {
-    // wait for colors to be valid (ghetto)
-    setTimeout(() => {
-        const default_bg = {color1:'#343d80', color2:'#1e2d6e'}
-
-        let clr
-        try {
-            clr = colors[el.id]
-        } catch (e) {
-            clr = default_bg[e.id]
-        } 
-        el.style.backgroundColor = clr
-    }, 100)
-}
 
 function update_canvas() {
     // optimize by drawing gradient instead
@@ -86,9 +107,7 @@ canvas.addEventListener('mousemove', e => {
         // get color from gradient
         const img_d = ctx.getImageData((m.x - left), (m.y - top), 1, 1, {colorSpace: 'srgb'}).data
         // format Uint8ClampedArray to rgb string
-        console.log(id)
         colors[id] = `rgb(${img_d[0]},${img_d[1]},${img_d[2]})`
-        save_colors()
         document.getElementById(id).style.backgroundColor = colors[id]
     }
 })
@@ -100,32 +119,9 @@ document.addEventListener('click', e => {
     }
 })
 
-function get_colors() {
-    // get colors from localstorage
-    const stored_colors = localStorage.getItem('colors')
-    if (stored_colors != null) {
-        colors = JSON.parse(stored_colors)
-    } else {
-        colors = {
-            color1: 'rgb(255,255,255)',
-            color2: 'rgb(255,255,255)',
-            color3: 'rgb(255,255,255)'
-        }
-    }
-}
 
-function save_colors() {
-    // map out undefined objects or object with a val of ""
-    localStorage.setItem('colors', JSON.stringify(colors))
-}
+update_canvas()
 
-document.addEventListener('DOMContentLoaded', () => {
-    get_colors()
-    // wait 200ms
-    setTimeout(() => {
-        update_canvas()
-    }, 200)
-})
 
 // cred: https://www.30secondsofcode.org/js/s/hsb-to-rgb/
 function hsb_to_rgb(h) {

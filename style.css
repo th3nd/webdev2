@@ -24,7 +24,7 @@ html {
 
 body {
     overflow-x: hidden;
-    background: linear-gradient(to bottom, var(--background-primary), var(--background-secondary));
+    /* background: linear-gradient(to bottom, var(--background-primary), var(--background-secondary)); */
 }
 
 .c {
@@ -93,7 +93,7 @@ h2 {
     overflow-y: auto;
 }
 
-#news_container {
+.news_container {
     width: auto;
     height: auto;
     overflow: scroll;
@@ -103,30 +103,30 @@ h2 {
     color: #cccccc;
 }
 
-#news_container::-webkit-scrollbar {
+.news_container::-webkit-scrollbar {
     width: 8px;
 }
 
-#news_container::-webkit-scrollbar-thumb {
+.news_container::-webkit-scrollbar-thumb {
     background: var(--scrollbar-thumb);
     border-radius: 4px;
 }
 
-#news_container::-webkit-scrollbar-thumb:hover {
+.news_container::-webkit-scrollbar-thumb:hover {
     background: var(--scrollbar-thumb-hover);
 }
 
-#news_container::-webkit-scrollbar-track {
+.news_container::-webkit-scrollbar-track {
     background: var(--scrollbar-track);
 }
 
 /* Firefox-specific styles */
-#news_container {
+.news_container {
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
-#news_container:hover {
+.news_container:hover {
     scrollbar-color: var(--scrollbar-thumb-hover) transparent;
 }
 
@@ -182,7 +182,7 @@ canvas {
 
 }
 
-#dates li:hover {
+.dates li:hover {
     cursor: pointer;
     color: #cccccc;
 }
@@ -289,7 +289,7 @@ canvas {
 
     }
 
-    #news_container {
+    .news_container {
         width: 100%;
         max-height: 50vh;
         overflow-y: scroll;

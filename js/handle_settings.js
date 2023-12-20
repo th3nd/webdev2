@@ -1,57 +1,40 @@
-const wparent = document.querySelector('#widgets')
+import { get_colors, rgb_to_hex } from "./colorpicker.js"
+
+const globals = {
+    widget_names: [],
+    row_content: [],
+    accent_color: '',
+    bgtype: '',
+    bgcolors: [],
+    bgimage: '',
+    darkmode: -1
+}
 
 var page_count = 0
-function add_widget(dname='none') {
+function add_widget(default_name='none') {
     page_count++
     const widget = document.createElement('div')
     widget.classList.add('widget')
+    widget.classList.add('dropdown_parent')
     widget.innerHTML = `
     <p>page ${page_count}</p>
     <div class="dropdown">
-        <p class="name">${dname}</p>
+        <p class="name">${default_name}</p>
         <div class="options">
             <ul>
                 <li>none</li>
                 <li>graph</li>
                 <li>temp</li>
                 <li>news</li>
-                <li>col</li>
+                <li>row</li>
         </div>
     </div>
     `
-    wparent.appendChild(widget)
+    // append child to the widget container
+    document.querySelector('.w').appendChild(widget)
 
-    // Add the click event listener for this widget's 'name' element
+    // add the click event listener for this widget's 'name' element
     handle_dropdown(widget.querySelector('.name'))
-}
-
-function save_widgets() {
-    names= []
-    const widgets = document.querySelectorAll('.widget')
-    for (let i = 0; i < widgets.length; i++) {
-        const name = widgets[i].querySelector('.name').innerText
-        if (name != 'none')
-            names.push(name)
-    }
-    
-    localStorage.setItem('widget_names', names)
-    load_widgets()
-}
-
-
-function load_widgets() {
-    page_count = 0
-    let names
-    try {
-        names = localStorage.getItem('widget_names').split(',')
-    } catch (e) {
-        // default values for when we havent loaded settings before
-        names = ['col', 'graph']
-    }
-    wparent.innerHTML = ''
-    for (let i = 0; i < names.length; i++) {
-        add_widget(names[i])
-    }
 }
 
 // handle dropdowns in settings, helperfunc
@@ -60,14 +43,15 @@ function handle_dropdown(el) {
         // check if clicked is inside options div, and what option was clicked
         const options = e.target.parentElement.parentElement
         if (options.classList.contains('options')) {
-            const option = e.target.innerText
-            el.innerText = option
+            const option = e.target.innerText            
 
+            el.innerText = option
             display_option(option)
         }
     })
 }
 
+// function only used for 1 dropdown
 function display_option(option) {
     const bgoptions = ['image', 'color', 'dynamic', 'particles']
     // this is only for our background type widget, and badly hardcoded
@@ -78,150 +62,202 @@ function display_option(option) {
             document.querySelector(`#${option}`).style.display = 'none'
         })
         document.querySelector(`#${option}`).style.display = 'block'
-        // write the option to localStorage
-        localStorage.setItem('bgtype', option)
+        // write the option to globals
+        globals.bgtype = option
     }
 }
 
-document.querySelector('#add').addEventListener('click', () => add_widget())
-document.querySelector('#save').addEventListener('click', () => save_widgets())
-document.addEventListener('DOMContentLoaded', () => {
-    // get info on darkmode checkbox
-    const darkmode = localStorage.getItem('darkmode')
-    if (darkmode)
-        document.querySelector('#darkmode').checked = darkmode
-    else
-        document.querySelector('#darkmode').checked = true
-        
+function load_widgets() {
+    // Load the widgets from the local storage
+    const widgets = globals.widget_names.split(',')
+    // TODO: now we just assume that the user has loaded the main page before the settings page.
+    if (widgets == null) return
+    for (const widget of widgets) {
+        add_widget(widget)
+    }
+}
 
-    // correctly set the name for dropdown.
-    // grab bgtype from localstorage
-    let first_name = localStorage.getItem('bgtype')
-    if (!first_name)
-        first_name = 'default'
-        
-    const drop = document.querySelector("#coloroptions")
-    drop.innerText = first_name
-    display_option(first_name)
+// event listener for 'add' button
+document.querySelector('#add').addEventListener('click', () => {
+    add_widget()
+})
 
-    // add eventlistener for all dropdowns
-    handle_dropdown(drop)
-    // grab colors from localstorage
+function get_variables() {
+    // loop thru globals obj, get values from localstorage
+    for (const key in globals) {
+        globals[key] = localStorage.getItem(key)
+    }
+
+    // checkbox eventlistener (dynamic)
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        // load vals from localstorage
+        checkbox.checked = (parseInt(globals[checkbox.id]) == 1) ? true : false
+        checkbox.addEventListener('change', e => {
+            const checked = e.target.checked
+            const id = e.target.id
+            globals[id] = (checked == true) ? 1 : 0
+        })
+    })
+
+    // same for textfields
+    document.querySelectorAll('input[type="text"]').forEach(textfield => {
+        textfield.value = globals[textfield.id]
+        textfield.addEventListener('input', e => {
+            const value = e.target.value
+            const id = e.target.id
+            globals[id] = value
+        })
+    })
+
+    const num = document.querySelector('#numcolor').innerText = globals.bgcolors.split(',').length
+
+    for (let i = 0; i < num; i++) {
+        add_picker(i+1)
+    }
+
+    // load colors from localstorage
+    const bgcolors = globals.bgcolors.split(',')
+    console.log(bgcolors)
+
+    // bgcolors
+    for (let i = 0; i < bgcolors.length; i++) {
+        const color = bgcolors[i]
+        const el = document.querySelector(`#color${i+1}`)
+        el.style.backgroundColor = color
+    }
+
+    document.querySelector('#accent').style.backgroundColor = globals.accent_color
+
+    const dropdowns = document.querySelectorAll('.dropdown')
+    for (const dropdown of dropdowns) {
+        handle_dropdown(dropdown.querySelector('.name'))
+    }
+
+    // change bgtype dropdown
+    const bgtype = globals.bgtype
+    const bgoptions = ['image', 'color', 'dynamic', 'particles']
+    // this is only for our background type widget, and badly hardcoded
+    // if bgoptions contain option
+    if (bgoptions.includes(bgtype)) {
+        // change dropdown name to bgtype
+        document.querySelector('.bgtype .name').innerText = bgtype
+        // hide all options
+        bgoptions.forEach(option => {
+            document.querySelector(`#${option}`).style.display = 'none'
+        })
+        document.querySelector(`#${bgtype}`).style.display = 'block'
+        // write the option to globals
+        globals.bgtype = bgtype
+    }
+
+
     load_widgets()
-    // grab how many colors we have saved here, use that as param.
-    let clr_num
-    try {
-        clr_num = localStorage.getItem('colors').split(':').length-1
-    } catch (e) {
-        // default value if we dont have any previous colors is 3.
-        clr_num = 3
-    }
-    draw_picker(clr_num)
-})
-
-
-// eventlistener for all spans in options div
-const options_changed = new Event("options_changed")
-const options = document.querySelectorAll('span')
-options.forEach(option => {
-    option.addEventListener('click', e => {
-        window.dispatchEvent(options_changed)
-
-        // fix something here so that num_el starts with the correct num instead of always being 3.
-        let num_el = document.querySelector('#numcolor')
-        let num = parseInt(num_el.innerText)
-
-        if (e.target.id == 'less' && num > 1) {
-            num--
-            // remove last color
-            const colors = JSON.parse(localStorage.getItem('colors'))
-
-            // TODO: filter out all colors that doesnt end with color
-            const keys = Object.keys(colors)
-            const lastKey = keys.filter(key => key.startsWith('color'))[keys.length - 1]
-            // const keys = Object.keys(colors)
-            // const lastKey = keys[keys.length - 1]
-            if (lastKey) 
-                delete colors[lastKey]
-            localStorage.setItem('colors', JSON.stringify(colors))
-        }
-        else if (e.target.id == 'more') {
-            num++
-        }
-        num_el.innerText = num
-        
-        draw_picker(num)
-    })
-})
-
-function draw_picker(n) {
-    // append child to options div
-    const ul = document.querySelector('.color_list')
-    ul.innerHTML = ''
-    for (let i = 0; i < n; i++){
-        let colorpicker = document.createElement('li')
-        let name = document.createElement('p')
-        let picker = document.createElement('div')
-        name.innerText = `color ${i+1}`
-        picker.className = 'pick'
-        picker.id = `color${i+1}`
-        picker.onclick = () => open_colorpicker(picker)
-        picker.onload = set_color(picker)
-        // set picker bg color to color in localstorage
-        colorpicker.appendChild(name)
-        colorpicker.appendChild(picker)
-        ul.appendChild(colorpicker)
-    } 
 }
 
-// eventlistener for when button with id save_img is clicked.
-document.querySelector('#img_save').addEventListener('click', () => {    
-    // grab value from input with id image_input
-    const url = document.querySelector('#image_input').value
-    // save url to localstorage
-    localStorage.setItem('bg_url', url)
+// eventlistener for #more
+document.querySelector('#more').addEventListener('click', () => {
+    const numcolor = document.querySelector('#numcolor')
+    const num = parseInt(numcolor.innerText) + 1
+    add_picker(num)
 })
 
-// eventlistener for all input with type checkbox
-document.querySelectorAll('input[type=checkbox]').forEach(check => {
-    check.addEventListener('click', e => {
-        // save value to localstorage
-        if (e.target.id == 'darkmode') {
-            localStorage.setItem(`${e.target.id}`, e.target.checked)
+// eventlistener for #less
+document.querySelector('#less').addEventListener('click', () => {
+    const numcolor = document.querySelector('#numcolor')
+    const num = parseInt(numcolor.innerText) - 1
+    remove_picker(num)
+
+})
+
+
+function add_picker(num) {
+    if (num <= 5) {
+        numcolor.innerText = num
+        // make the child with index num visible
+        document.querySelector(`#color${num}`).parentElement.style.display = 'flex'
+    }
+}
+
+function remove_picker(num) {
+    if (num >= 1) {
+        numcolor.innerText = num
+        document.querySelector(`#color${num+1}`).parentElement.style.display = 'none'
+    }
+}
+
+function save_variables() {
+    const colors = get_colors()
+    
+    let bgcolors = []
+    // filter out everything that doesnt start with color
+    // grab bg color from all .pick elements that has an id that contains 'color'
+    document.querySelectorAll('.pick').forEach(el => {
+        if (el.id.includes('color')) {
+            if (el.style.backgroundColor) {
+                const rgb = el.style.backgroundColor.slice(4, -1).split(',').map(x => parseInt(x))
+                console.log(rgb[0], rgb[1], rgb[2], el.id)
+                bgcolors.push(rgb_to_hex(rgb[0], rgb[1], rgb[2]))
+            }
         }
     })
-})
+    
+    // grab accent color from colors
+    globals.accent_color = colors.accent
+    
+    // clamp bgcolors to numcolor
+    const numcolor = parseInt(document.querySelector('#numcolor').innerText)
+    bgcolors = bgcolors.slice(0, numcolor)
+    globals.bgcolors = bgcolors
 
-// eventlitener for all input with type range
-document.querySelectorAll('input[type=range]').forEach(range => {
-    range.addEventListener('input', e => {
-        // save value to localstorage
-        localStorage.setItem(`${e.target.id}`, e.target.value)
-        // set ::after content to target value
-        document.querySelector(`#${e.target.id}_val`).innerText = e.target.value
+    // save all the widgets to localstorage
+    let widget_names = []
+    let row_content = []
+    
+    document.querySelectorAll('.name').forEach(name => {
+        // if (name.parentElement.parentElement.className == 'widget')
+        //     globals.widget_names.push(name.innerText)
+
+        switch (name.parentElement.parentElement.classList[0]) {
+            case 'widget':
+                widget_names.push(name.innerText)
+                break
+            case 'dropdown_parent':
+                row_content.push(name.innerText)
+                break
+            case 'bgtype':
+                globals.bgtype = name.innerText
+                break
+
+        }
+
+        console.log(name.parentElement.parentElement.className, name.innerText)
     })
-})
 
+    globals.widget_names = widget_names
+    globals.row_content = row_content
 
-// display slider val.
-// get all input[type=range] using forEach.
-document.querySelectorAll('input[type=range]').forEach(range => {
-    // get value from localstorage
-    const val = localStorage.getItem(range.id)
-    // set value to range
-    document.querySelector(`#${range.id}_val`).innerHTML = val
-    range.value = val
-})
+    // textfields
+    document.querySelectorAll('input[type="text"]').forEach(textfield => {
+        globals[textfield.id] = textfield.value
+    })
 
-// do the same for colorpickers. load the color
-// the reason for this not working with all colorpickers are that some are loaded later with other funcitons.
-document.querySelectorAll('.pick').forEach(e => {
-    let clr
-    try {
-        clr = JSON.parse(localStorage.getItem('colors'))[e.id]
-    } catch (e) {
-        // set default color on colorpicker if color isnt set beforehand
-        clr = '#ffffff'
+    
+    // loop thru globals obj, save values to localstorage
+    for (const key in globals) {
+        // if any values are undefined, ignore
+        if (globals[key] != null)
+            localStorage.setItem(key, globals[key])
     }
-    e.style.background = clr
+}
+
+
+// eventlistener for #save
+document.querySelector('#save').addEventListener('click', () => {
+    save_variables()
 })
+
+
+// get_variables function grabs vars from localstorage, sets the to globals.
+// then we add eventlisteners to all the dropdowns and colorpickers (TODO)
+// then we load the widgets from the globals obj
+get_variables()
