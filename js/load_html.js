@@ -122,7 +122,6 @@ function apply_settings() {
 
     // check if we have darkmode on
     const darkmode = localStorage.getItem('darkmode')
-    console.log(darkmode)
     if (darkmode === null) {
         localStorage.setItem('darkmode', '-1')
         apply_settings()

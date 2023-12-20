@@ -3,6 +3,8 @@ function on_load() {
     // add loading circle on page
     // TODO
 
+    
+
     // bad approach: we dont do this. we always want new weather data.
         // check if we have data in localstorage
         // if we do, load it and remove circle

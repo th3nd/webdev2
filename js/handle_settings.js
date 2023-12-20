@@ -117,7 +117,6 @@ function get_variables() {
 
     // load colors from localstorage
     const bgcolors = globals.bgcolors.split(',')
-    console.log(bgcolors)
 
     // bgcolors
     for (let i = 0; i < bgcolors.length; i++) {
@@ -195,7 +194,6 @@ function save_variables() {
         if (el.id.includes('color')) {
             if (el.style.backgroundColor) {
                 const rgb = el.style.backgroundColor.slice(4, -1).split(',').map(x => parseInt(x))
-                console.log(rgb[0], rgb[1], rgb[2], el.id)
                 bgcolors.push(rgb_to_hex(rgb[0], rgb[1], rgb[2]))
             }
         }
@@ -229,8 +227,6 @@ function save_variables() {
                 break
 
         }
-
-        console.log(name.parentElement.parentElement.className, name.innerText)
     })
 
     globals.widget_names = widget_names

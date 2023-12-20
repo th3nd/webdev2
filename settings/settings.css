@@ -44,6 +44,50 @@ body {
     margin-top: 2vh;
 }
 
+.save {
+    position: fixed;
+    width: 60%;
+    height: 2.2rem;
+    margin: 0;
+    margin-top: auto;
+    bottom: 1rem;
+    padding: none;
+    background: var(--widget-background);
+    left: 50%;
+    translate: -50% 0;
+    border: var(--border-color) 2px solid;
+
+    /* text styling */
+    color: var(--text-color);
+    font-size: .8rem;
+    font-weight: 100;
+    font-family: sans-serif;
+
+}
+
+#save {
+    background: rgb(114, 33, 139);
+    width: 6rem;
+    border: none;
+    height: 2.2rem;
+    padding: none;
+    font-size: .8rem;
+    cursor: pointer;
+    transition: 300ms;
+}
+
+#save:hover {
+    filter: contrast(5);
+}
+
+#save:active {
+    background: rgb(50, 15, 61);
+}
+
+.save h2 {
+    padding: .4rem;
+}
+
 .widget {
     display: flex;
     flex-direction: row;
@@ -126,8 +170,7 @@ button {
     transition: 200ms;
 }
 
-#add::before,
-#save::before {
+#add::before {
     display: inline-block;
     content: ' ';
     width: 1.2rem;
