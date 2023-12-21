@@ -129,8 +129,6 @@ function upd_dates() {
     })
 
     // load graph once on page load
-    
-
     dates_element.forEach(d => {
         d.addEventListener('click', e => {
             // get the iteration of child that user clicks

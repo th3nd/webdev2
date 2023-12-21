@@ -8,7 +8,9 @@
     --scrollbar-thumb: #ffffff46;
     --scrollbar-thumb-hover: #ffffff;
     --scrollbar-track: transparent;
-}
+
+    font-size: 2svh;
+}   
 
 * {
     margin: 0;
@@ -70,16 +72,22 @@ body {
     margin-right: 1rem;
 }
 
-h1 {
-    font-size: 5rem;
+
+.temp-display {
+    font-size: 3rem;
+    font-weight: 600;
 }
 
 h2 {
     font-size: 1.8rem;
 }
 
-.unfocus {
+.unfocused {
     opacity: 0.5;
+}
+
+.loc {
+    font-size: 2rem;
 }
 
 .loc * {
@@ -261,8 +269,8 @@ canvas {
         align-self: center;
     }
 
-    .temp .num h1 {
-        font-size: 40vw;
+    .temp-display {
+        font-size: 10rem;
     }
 
     div.weather.unfocus {

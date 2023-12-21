@@ -28,6 +28,8 @@ body {
     flex-wrap: wrap;
     flex-direction: column;
     font-size: 1.2rem;
+
+    margin-bottom: 10vh;
 }
 
 .c h1 {
@@ -108,12 +110,17 @@ body {
 }
 
 .dropdown {
+    background: var(--background);
     width: fit-content;
     padding: .5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     border: var(--border-color) 2px solid;
+}
+
+.dropdown:hover {
+    z-index: 9999;
 }
 
 .name {
@@ -158,7 +165,6 @@ li:hover {
     display: flex;
     cursor: pointer;
     overflow: hidden;
-    transition: 1s;
 }
 
 button {
