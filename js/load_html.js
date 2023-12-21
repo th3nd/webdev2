@@ -122,8 +122,8 @@ function apply_settings() {
 
     // check if we have darkmode on
     const darkmode = localStorage.getItem('darkmode')
-    if (darkmode === null) {
-        localStorage.setItem('darkmode', '-1')
+    if (darkmode == null) {
+        localStorage.setItem('darkmode', '1')
         apply_settings()
     }
 
@@ -138,6 +138,13 @@ function apply_settings() {
 
 // update clock
 function update_clock() {
+
+    const format_num = (num) => {
+        if (parseInt(num) < 10)
+            return '0' + num
+        else return num
+    }
+
     const time = new Date()
     const hours = time.getHours()
     const minutes = time.getMinutes()
@@ -145,8 +152,9 @@ function update_clock() {
     const day = time.getDate()
     const month = time.getMonth()
     const year = time.getFullYear()
-    const formatted_date = `${day}/${month}/${year}`
-    const formatted_time = `${hours}:${minutes}:${seconds}`
+
+    const formatted_date = `${format_num(day)}/${format_num(month+1)}/${year}`
+    const formatted_time = `${format_num(hours)}:${format_num(minutes)}:${format_num(seconds)}`
 
     
     // grab all clock div elements

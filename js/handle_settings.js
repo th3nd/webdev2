@@ -7,7 +7,7 @@ const globals = {
     bgtype: '',
     bgcolors: [],
     bgimage: '',
-    darkmode: -1
+    darkmode: '1'
 }
 
 var page_count = 0

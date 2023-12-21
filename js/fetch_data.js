@@ -93,22 +93,23 @@ function update_weather(data) {
 
 // get news
 async function get_news(country) {
-    const API_KEY = '838ac4f64c024d20af17254c464dcc9d'
-    const url = `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${API_KEY}`
+    // const API_KEY = '838ac4f64c024d20af17254c464dcc9d'
+    const url = `https://istock.cloud/newsapi/`
 
     try {
         const response = await fetch(url)
-
+        
         // if response is valid, do the rest
         if (response.ok) {
             const data = await response.json()
+            console.log(data)
             // get the news_container
             const c = document.querySelectorAll('.news_container')
 
             // loop thru all containers and add news
             c.forEach(c => {
                 // create a div for every atrictle in the json file
-                for (let i = 0; i < data.articles.length; i++) {
+                for (let i = 0; i < data.length; i++) {
                     // create outer div 
                     let div = document.createElement('div')
                     div.className = 'art'
@@ -119,14 +120,13 @@ async function get_news(country) {
                     let author = document.createElement('h3')
                     author.className = 'author'
 
-                    let title_text = data.articles[i].title.split(' - ')
-                    title.innerText = title_text[0]
-                    author.innerText = title_text[1]
+                    title.innerText = data[i].title
+                    author.innerText = data[i].source
 
                     div.appendChild(title)
                     div.appendChild(author)
 
-                    div.onclick = () => window.open(data.articles[i].url, '_blank')
+                    div.onclick = () => window.open(data[i].url, '_blank')
                     c.appendChild(div)
                 }
             })
