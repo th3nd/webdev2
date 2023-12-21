@@ -114,7 +114,6 @@ async function get_news(country) {
                     let div = document.createElement('div')
                     div.className = 'art'
 
-
                     // create h3, set the h3 text and save the author in a variable
                     let title = document.createElement('h3')
                     let author = document.createElement('h3')
