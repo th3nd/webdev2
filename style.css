@@ -261,16 +261,21 @@ canvas {
     }
 
     .child {
-        height: 100vh;
+        height: 50svh;
         justify-content: center;
+        width: auto;
     }
 
     .temp {
         align-self: center;
+        font-size: 6rem;
     }
 
     .temp-display {
-        font-size: 10rem;
+        font-size: 5rem;
+        width: 50%;
+        margin: auto;
+        text-align: center;
     }
 
     div.weather.unfocus {
@@ -312,5 +317,6 @@ canvas {
     canvas {
         width: 100%;
         height: 100%;
+        overflow-y: none;
     }
 }

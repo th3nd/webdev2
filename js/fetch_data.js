@@ -78,13 +78,15 @@ function update_weather(data) {
 
     const city = document.querySelectorAll('.city')
     const country = document.querySelectorAll('.country')
-    const temp = document.querySelectorAll('.temp')
+    const temp = document.querySelectorAll('.num')
+    const deg = document.querySelectorAll('.deg')
     const weather = document.querySelectorAll('.weather')
 
     // loop thru all elements and update them
     city.forEach(c => c.innerHTML = data.city.name)
     country.forEach(c => c.innerHTML = region_names.of(data.city.country))
     temp.forEach(t => t.innerHTML = data.list[0].main.temp)
+    deg.forEach(d => d.innerHTML = '°C')
     weather.forEach(w => w.innerHTML = data.list[0].weather[0].description)
 
 }
